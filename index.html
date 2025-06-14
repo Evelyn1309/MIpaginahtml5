@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Página Web Completa</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Bienvenido a Mi Sitio Web</h1>
+    <div style="text-align: center;"><video controls width="800">
+        <source src="assets/video/video1.mp4" type="video/mp4" >
+        Tu navegador no soporta la reproducción de video.
+      </video>
+    </div>
+<!--                   SECCION MENU -->
+    <nav>
+      <ul>
+        <li><a href="#seccion1">Inicio</a></li>
+        <h3></h3>
+        <li><a href="#seccion2">Sobre mí</a></li>
+        <h3></h3>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+<!--                   SECCION INTRODUCCION -->
+  <main>
+    <section id="seccion1">
+      <h2>Introducción</h2>
+      <p>HTML, que significa HyperText Markup Language, es el lenguaje fundamental para crear y estructurar el contenido de las páginas web. Define la estructura y el significado del contenido, utilizando etiquetas para indicar cómo debe mostrarse, como párrafos, encabezados, listas, imágenes y enlaces. Es la base de cualquier sitio web y permite a los desarrolladores web construir la estructura y contenido de sus páginas.  <strong>demuestra</strong> el uso de <em>HTML5 y CSS</em> para estructurar contenido web.</p>
+
+<!--                        SECCION MULTIMEDIA                    -->
+      <h3><center>Multimedia</center> </h3>
+      <details>
+    <summary>Sección 1</summary>
+    <img src="assets/img/img1.jpg" alt="Imagen descriptiva" height="300">
+  </details>
+
+  <details>
+    <summary>Sección 2</summary>
+    <img src="assets/img/img2.jpg" alt="Imagen descriptiva" height="300">
+  </details>
+
+  <details>
+    <summary>Sección 3</summary>
+    <img src="assets/img/img3.jpg" alt="Imagen descriptiva" height="300">
+  </details>
+    </section>
+
+<!--                        SECCION LISTA DE INTERESES               -->
+    <section id="seccion2">
+      <article>
+        <h2><center>Listas de Intereses</center></h2>
+        <h3>Lista ordenada</h3>
+        <ol>
+          <li>Programación</li>
+          <li>Diseño web</li>
+          <li>Multimedia</li>
+        </ol>
+
+        <h3>Lista desordenada</h3>
+        <ul>
+          <li>HTML</li>
+          <h3></h3>
+          <img src="assets/img/img1.jpg" alt="Imagen descriptiva" height="300">
+          <h3></h3>
+          <li>CSS</li>
+          <h3></h3>
+          <img src="assets/img/img2.jpg" alt="Imagen descriptiva" height="300">
+          <h3></h3>
+          <li>JavaScript</li>
+          <h3></h3>
+          <img src="assets/img/img3.jpg" alt="Imagen descriptiva" height="300">
+        </ul>
+      </article>
+
+<!--                      SECCION TABLA      -->
+      <article>
+        <h2><center>Tabla de Ejemplo</center></h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Edad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Evelyn</td>
+              <td>25</td>
+            </tr>
+            <tr>
+              <td>María</td>
+              <td>70</td>
+            </tr>
+            <tr>
+              <td>karla</td>
+              <td>48</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+<!--                        SECCION FORMULARIO -->
+    <section id="contacto">
+      <h2>Formulario de Contacto</h2>
+      <form>
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre"><br><br>
+
+        <label for="correo">Correo:</label><br>
+        <input type="email" id="correo" name="correo"><br><br>
+
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <!--                    SECCION PIE DE PAGINA -->
+  <footer>
+    <p>&copy;  Mi Sitio Web. Todos los derechos reservados.  
+      <a href="https://code.visualstudio.com/docs/?dv=win64user" target="_blank">Visita mi sitio externo</a>
+    </p>
+  </footer>
+</body>
+</html>
