@@ -2,13 +2,15 @@ body {
   font-family: Arial, sans-serif;
   background-color: #146317;
   color: #160f0f;
-  margin: 0;
-  padding: 0;
+  margin: 70;
+  padding: 40;
 }
 
 header, nav, main, section, article, footer {
-  padding: 20px;
+  padding: 40px;
   margin: 10px;
+  width: 100;
+  resize: horizontal;
 }
 
 h1 {
@@ -89,4 +91,133 @@ summary:hover {
 
 details[open] {
   background-color: #569ca5;
+}
+
+/* Estilo para sobrescribir el color del botón primario de Bootstrap */
+.btn-primary {
+    background-color: #ff5733 !important; /* Color naranja personalizado */
+    border-color: #ff5733 !important; /* Borde del mismo color */
+    color: white; /* Color del texto */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transición para animaciones */
+    border-radius: 8px; /* Borde redondeado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+/* Animación al pasar el ratón por encima del botón primario */
+.btn-primary:hover {
+    background-color: #e64a2e !important; /* Color más oscuro al pasar el ratón */
+    transform: translateY(-3px); /* Pequeño levantamiento */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+}
+
+/* Estilos para el botón del collapse para diferenciarlos visualmente (si lo reintroduces) */
+/* .custom-button-info {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-button-info:hover {
+    background-color: #218838 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+} */
+
+/* Estilo para las cards dentro de la sección principal (y ahora para multimedia) */
+.custom-card {
+    border-radius: 10px; /* Bordes redondeados para las cards */
+    overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
+    border: none; /* Elimina el borde predeterminado de Bootstrap */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-5px); /* Efecto de levantamiento al pasar el ratón */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25) !important; /* Sombra más grande al hacer hover */
+}
+
+/* Estilo para el contenido del collapse (si lo reintroduces) */
+/* .custom-card-collapse {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
+
+/* Estilos para el formulario personalizado */
+.custom-form {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* Estilos para las tablas */
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Estilos para el elemento <details> */
+details {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+summary {
+    padding: 15px;
+    background-color: #6c757d; /* Color secundario de Bootstrap */
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    border-bottom: 1px solid #dee2e6;
+}
+
+details[open] summary {
+    border-bottom: 1px solid #dee2e6;
+}
+
+details .card-body {
+    padding: 15px;
+}
+
+/* Media Query propia para cambiar colores en pantallas pequeñas */
+@media (max-width: 768px) { /* Para pantallas de tablets y móviles */
+    .btn-primary, .custom-button-info {
+        background-color: #17a2b8 !important; /* Color turquesa en pantallas pequeñas */
+        border-color: #17a2b8 !important;
+        transform: none; /* Elimina el levantamiento en pantallas pequeñas */
+        box-shadow: none; /* Elimina la sombra en pantallas pequeñas */
+    }
+
+    .btn-primary:hover, .custom-button-info:hover {
+        background-color: #138496 !important;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .custom-card {
+        transform: none;
+        box-shadow: 0 4px 8px rgba(131, 43, 43, 0.1) !important; /* Sombra más sutil en móviles */
+    }
+
+    .custom-card:hover {
+        transform: none;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important; /* Sombra ligeramente más grande al hover */
+    }
+
+    /* Ajustes para el pie de página en móviles */
+
+    footer .container-fluid { /* Cambiado de .container a .container-fluid si usas eso */
+        resize: horizontal;
+    }
+
+    footer .mt-2 {
+        margin-top: 100px !important;
+    }
 }
