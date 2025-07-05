@@ -2,16 +2,16 @@ body {
   font-family: Arial, sans-serif;
   background-color: #146317;
   color: #160f0f;
-  margin: 70;
+  margin: 0;
   padding: 40;
 }
 
 
 header, nav, main, section, article, footer {
-  padding: 40px;
-  margin: 10px;
-  width: 100;
-  resize: horizontal;
+  padding: 0px;
+  margin: 0px;
+  width: 10;
+  
 }
 
 h1 {

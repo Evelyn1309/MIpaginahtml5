@@ -78,8 +78,6 @@
     </div>
   </div>
 </div>
-
-<!--FIN DEL MODAL iniciar-->
 <style>
     body {
       font-family: Arial, sans-serif;
@@ -226,7 +224,126 @@ fileInput.addEventListener('change', () => {
 });
 
   </script>
+<!-- Sección de formulario debajo del carrusel -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header text-white bg-primary">
+          <h4 class="mb-0">Registro de Usuario</h4>
+        </div>
+        <form id="registroForm" class="needs-validation" novalidate>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" required pattern="^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,}$">
+              <div class="invalid-feedback">Debe tener al menos 3 letras y solo caracteres alfabéticos.</div>
+            </div>
 
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input type="email" class="form-control" id="email" required>
+              <div class="invalid-feedback">Correo inválido.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="password" required>
+              <div class="invalid-feedback">Mínimo 8 caracteres, 1 número y 1 símbolo.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="confirmar" class="form-label">Confirmar Contraseña</label>
+              <input type="password" class="form-control" id="confirmar" required>
+              <div class="invalid-feedback">Las contraseñas deben coincidir.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="edad" class="form-label">Edad</label>
+              <input type="number" class="form-control" id="edad" required min="18">
+              <div class="invalid-feedback">Debes tener al menos 18 años (solo números).</div>
+            </div>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <button type="reset" class="btn btn-secondary">Reiniciar</button>
+            <button type="submit" class="btn btn-success" id="btnEnviar" disabled>Enviar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('registroForm');
+    const btnEnviar = document.getElementById('btnEnviar');
+
+    const nombre = document.getElementById('nombre');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const confirmar = document.getElementById('confirmar');
+    const edad = document.getElementById('edad');
+
+    function validarNombre() {
+      const regex = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,}$/;
+      return regex.test(nombre.value);
+    }
+
+    function validarEmail() {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email.value);
+    }
+
+    function validarPassword() {
+      const regex = /^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
+      return regex.test(password.value);
+    }
+
+    function validarConfirmar() {
+      return confirmar.value === password.value;
+    }
+
+    function validarEdad() {
+      const edadVal = parseInt(edad.value, 10);
+      return !isNaN(edadVal) && edadVal >= 18;
+    }
+
+    function checkForm() {
+      const valido = validarNombre() && validarEmail() && validarPassword() && validarConfirmar() && validarEdad();
+      btnEnviar.disabled = !valido;
+
+      nombre.classList.toggle('is-invalid', !validarNombre());
+      nombre.classList.toggle('is-valid', validarNombre());
+
+      email.classList.toggle('is-invalid', !validarEmail());
+      email.classList.toggle('is-valid', validarEmail());
+
+      password.classList.toggle('is-invalid', !validarPassword());
+      password.classList.toggle('is-valid', validarPassword());
+
+      confirmar.classList.toggle('is-invalid', !validarConfirmar());
+      confirmar.classList.toggle('is-valid', validarConfirmar());
+
+      edad.classList.toggle('is-invalid', !validarEdad());
+      edad.classList.toggle('is-valid', validarEdad());
+    }
+
+    form.addEventListener('input', checkForm);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!btnEnviar.disabled) {
+        alert('¡Formulario enviado correctamente!');
+        form.reset();
+        document.querySelectorAll('.is-valid, .is-invalid').forEach(el => el.classList.remove('is-valid', 'is-invalid'));
+        btnEnviar.disabled = true;
+      }
+    });
+  });
+</script>
+
+<!--FIN DEL MODAL iniciar-->
 <!--               seccion carusel -->
     <main class="container my-5">
       
@@ -269,122 +386,6 @@ fileInput.addEventListener('change', () => {
             </button>
         </div>
         ---
-<!-- Sección de formulario debajo del carrusel -->
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-header text-white bg-primary">
-          <h4 class="mb-0">Registro de Usuario</h4>
-        </div>
-        <form id="registroForm" class="needs-validation" novalidate>
-          <div class="card-body">
-            <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="nombre" required>
-              <div class="invalid-feedback">Debe tener al menos 3 caracteres.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="email" class="form-label">Correo Electrónico</label>
-              <input type="email" class="form-control" id="email" required>
-              <div class="invalid-feedback">Correo inválido.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="password" class="form-label">Contraseña</label>
-              <input type="password" class="form-control" id="password" required>
-              <div class="invalid-feedback">Mínimo 8 caracteres, 1 número y 1 símbolo.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="confirmar" class="form-label">Confirmar Contraseña</label>
-              <input type="password" class="form-control" id="confirmar" required>
-              <div class="invalid-feedback">Las contraseñas deben coincidir.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="edad" class="form-label">Edad</label>
-              <input type="number" class="form-control" id="edad" required>
-              <div class="invalid-feedback">Debes tener al menos 18 años.</div>
-            </div>
-          </div>
-          <div class="card-footer d-flex justify-content-between">
-            <button type="reset" class="btn btn-secondary">Reiniciar</button>
-            <button type="submit" class="btn btn-success" id="btnEnviar" disabled>Enviar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('registroForm');
-    const btnEnviar = document.getElementById('btnEnviar');
-
-    const nombre = document.getElementById('nombre');
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const confirmar = document.getElementById('confirmar');
-    const edad = document.getElementById('edad');
-
-    function validarNombre() {
-      return nombre.value.trim().length >= 3;
-    }
-
-    function validarEmail() {
-      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return regex.test(email.value);
-    }
-
-    function validarPassword() {
-      const regex = /^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
-      return regex.test(password.value);
-    }
-
-    function validarConfirmar() {
-      return confirmar.value === password.value;
-    }
-
-    function validarEdad() {
-      return parseInt(edad.value, 10) >= 18;
-    }
-
-    function checkForm() {
-      const valido = validarNombre() && validarEmail() && validarPassword() && validarConfirmar() && validarEdad();
-      btnEnviar.disabled = !valido;
-
-      nombre.classList.toggle('is-invalid', !validarNombre());
-      nombre.classList.toggle('is-valid', validarNombre());
-
-      email.classList.toggle('is-invalid', !validarEmail());
-      email.classList.toggle('is-valid', validarEmail());
-
-      password.classList.toggle('is-invalid', !validarPassword());
-      password.classList.toggle('is-valid', validarPassword());
-
-      confirmar.classList.toggle('is-invalid', !validarConfirmar());
-      confirmar.classList.toggle('is-valid', validarConfirmar());
-
-      edad.classList.toggle('is-invalid', !validarEdad());
-      edad.classList.toggle('is-valid', validarEdad());
-    }
-
-    form.addEventListener('input', checkForm);
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (!btnEnviar.disabled) {
-        alert('¡Formulario enviado correctamente!');
-        form.reset();
-        document.querySelectorAll('.is-valid, .is-invalid').forEach(el => el.classList.remove('is-valid', 'is-invalid'));
-        btnEnviar.disabled = true;
-      }
-    });
-  });
-</script>
 
         <section id="seccion1" class="mb-5">
             <h2 class="text-center mb-4">Introducción</h2>
@@ -492,156 +493,49 @@ fileInput.addEventListener('change', () => {
 
 <h3></h3>
 <h2></h2>
-<div class="container my-5">
+<footer class="bg-dark text-white pt-4">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      <!-- Columna 1 -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase">Mi Sitio</h5>
+        <p>Tu página web de confianza para aprender, explorar y disfrutar contenido dinámico.</p>
+      </div>
 
- 
-<!-- End of .container -->
- <div class="container my-5" >
-  <!-- Footer -->
-  <footer
-          class="text-center text-lg-start text-white"
-          style="background-color: #45526e"
-          
-          >
-    <!-- Grid container -->
-    <div class="container p-4 pb-0">
-      <!-- Section: Links -->
-      <section class="">
-        <!--Grid row-->
-        <div class="row">
-          <!-- Grid column -->
-          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">
-              Company name
-            </h6>
-            <p>
-              Here you can use rows and columns to organize your footer
-              content. Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit.
-            </p>
-          </div>
-          <!-- Grid column -->
+      <!-- Columna 2 -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase">Enlaces</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white text-decoration-none">Inicio</a></li>
+          <li><a href="#" class="text-white text-decoration-none">Galería</a></li>
+          <li><a href="#" class="text-white text-decoration-none">Contacto</a></li>
+        </ul>
+      </div>
 
-          <hr class="w-100 clearfix d-md-none" />
+      <!-- Columna 3 -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase">Contacto</h5>
+        <p><i class="bi bi-envelope-fill me-2"></i> contacto@misitio.com</p>
+        <p><i class="bi bi-phone-fill me-2"></i> +593 123 456 789</p>
+      </div>
 
-          <!-- Grid column -->
-          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
-            <p>
-              <a class="text-white">MDBootstrap</a>
-            </p>
-            <p>
-              <a class="text-white">MDWordPress</a>
-            </p>
-            <p>
-              <a class="text-white">BrandFlow</a>
-            </p>
-            <p>
-              <a class="text-white">Bootstrap Angular</a>
-            </p>
-          </div>
-          <!-- Grid column -->
-
-          <hr class="w-100 clearfix d-md-none" />
-
-          <!-- Grid column -->
-          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">
-              Useful links
-            </h6>
-            <p>
-              <a class="text-white">Your Account</a>
-            </p>
-            <p>
-              <a class="text-white">Become an Affiliate</a>
-            </p>
-            <p>
-              <a class="text-white">Shipping Rates</a>
-            </p>
-            <p>
-              <a class="text-white">Help</a>
-            </p>
-          </div>
-
-          <!-- Grid column -->
-          <hr class="w-100 clearfix d-md-none" />
-
-          <!-- Grid column -->
-          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-            <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
-            <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
-            <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
-            <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
-            <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
-          </div>
-          <!-- Grid column -->
-        </div>
-        <!--Grid row-->
-      </section>
-      <!-- Section: Links -->
-
-      <hr class="my-3">
-
-      <!-- Section: Copyright -->
-      <section class="p-3 pt-0">
-        <div class="row d-flex align-items-center">
-          <!-- Grid column -->
-          <div class="col-md-7 col-lg-8 text-center text-md-start">
-            <!-- Copyright -->
-            <div class="p-3">
-              © 2020 Copyright:
-              <a class="text-white" href="https://mdbootstrap.com/"
-                 >MDBootstrap.com</a
-                >
-            </div>
-            <!-- Copyright -->
-          </div>
-          <!-- Grid column -->
-
-          <!-- Grid column -->
-          <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
-            <!-- Facebook -->
-            <a
-               class="btn btn-outline-light btn-floating m-1"
-               class="text-white"
-               role="button"
-               ><i class="fab fa-facebook-f"></i
-              ></a>
-
-            <!-- Twitter -->
-            <a
-               class="btn btn-outline-light btn-floating m-1"
-               class="text-white"
-               role="button"
-               ><i class="fab fa-twitter"></i
-              ></a>
-
-            <!-- Google -->
-            <a
-               class="btn btn-outline-light btn-floating m-1"
-               class="text-white"
-               role="button"
-               ><i class="fab fa-google"></i
-              ></a>
-
-            <!-- Instagram -->
-            <a
-               class="btn btn-outline-light btn-floating m-1"
-               class="text-white"
-               role="button"
-               ><i class="fab fa-instagram"></i
-              ></a>
-          </div>
-          <!-- Grid column -->
-        </div>
-      </section>
-      <!-- Section: Copyright -->
+      <!-- Columna 4 -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase">Síguenos</h5>
+        <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
+      </div>
     </div>
-    <!-- Grid container -->
-  </footer>
-  <!-- Footer -->
-</div>
-<!-- End of .container -->
+
+    <hr class="border-light">
+
+    <div class="text-center pb-3">
+      <small>&copy; 2025 Mi Sitio. Todos los derechos reservados.</small>
+    </div>
+  </div>
+</footer>
+
     <!--LIBRERIA JS-->
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/bootstrap.bundle.min (2).js"></script>
@@ -649,6 +543,5 @@ fileInput.addEventListener('change', () => {
     <script src="js/main.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/brands.js" integrity="sha384-sCI3dTBIJuqT6AwL++zH7qL8ZdKaHpxU43dDt9SyOzimtQ9eyRhkG3B7KMl6AO19" crossorigin="anonymous"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
-
 </body>
 </html>
