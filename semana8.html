@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web Completa con Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    
+        <!--LIBRERIA CSS-->
+     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min (2).css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min (3).css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style (2).css">
+    <link rel="stylesheet" type="text/css" href="css/style (3).css">
+    <!--LIBRERIA FONTAWESOME-->
+    <link rel="stylesheet" href="../css/fontawesome-free/css/all.min.css">
+</head>
+<body >
+   <div class="pos-f-t">
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <h4 class="text-white">MENU</h4>
+      <span class="text-muted">
+      
+      </span>
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <li class="nav-item active">
+    <a href="" data-bs-toggle="modal" data-bs-target="#ModalRegistro"class="btn btn-danger"> <img src="iconos/door-open.svg" >CONTACTO</a>    
+    <button type="button" class="btn btn-success">
+    <img src="iconos/bell-fill.svg" ><span class="badge badge-light">4</span>
+</button> 
+    </li>
+  </nav>
+</div>
+<!-- Modal iniciar-->
+<div class="modal fade" id="ModalRegistro" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:rgb(218, 139, 178) ;">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Contacto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="formContacto" novalidate>
+            <div class="mb-3">
+                <label for="contactoNombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="contactoNombre" required pattern="^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,}$">
+                <div class="invalid-feedback">Debe tener al menos 3 letras y solo letras.</div>
+            </div>
+            <div class="mb-3">
+                <label for="contactoCorreo" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="contactoCorreo" required>
+                <div class="invalid-feedback">Debe ser un correo válido.</div>
+            </div>
+            <div class="mb-3">
+                <label for="contactoMensaje" class="form-label">Mensaje</label>
+                <textarea id="contactoMensaje" class="form-control" rows="4" required></textarea>
+                <div class="invalid-feedback">El mensaje no puede estar vacío.</div>
+            </div>
+            <button type="submit" class="btn btn-success">Enviar</button>
+        </form>
+  <button type="submit" class="btn btn-primary">Enviar</button> 
+        </div>
+    </div>
+  </div>
+</div>
+  <div class="container">
+    <h2 class="text-center mb-4">Tabla de Productos</h2>
+
+    <!-- Formulario de producto -->
+    <form id="productoForm" class="mb-4">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <input type="text" id="nombre" class="form-control" placeholder="Nombre del Producto" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" id="precio" class="form-control" placeholder="Precio" required min="0">
+        </div>
+        <div class="col-md-3">
+          <input type="number" id="stock" class="form-control" placeholder="Stock" required min="0">
+        </div>
+        <div class="col-md-2 d-grid">
+          <button type="submit" class="btn btn-primary" id="btnGuardar">Agregar</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Tabla CRUD -->
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Lógica CRUD -->
+  <script>
+    let productos = [];
+    let editando = false;
+    let indexEditar = null;
+
+    const formulario = document.getElementById('productoForm');
+    const tablaBody = document.getElementById('tablaBody');
+    const btnGuardar = document.getElementById('btnGuardar');
+
+    formulario.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const precio = parseFloat(document.getElementById('precio').value);
+      const stock = parseInt(document.getElementById('stock').value);
+
+      if (editando) {
+        // Actualizar
+        productos[indexEditar] = { nombre, precio, stock };
+        editando = false;
+        btnGuardar.textContent = "Agregar";
+      } else {
+        // Crear
+        productos.push({ nombre, precio, stock });
+      }
+
+      formulario.reset();
+      mostrarProductos();
+    });
+
+    function mostrarProductos() {
+      tablaBody.innerHTML = "";
+
+      productos.forEach((producto, index) => {
+        tablaBody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${producto.nombre}</td>
+            <td>$${producto.precio.toFixed(2)}</td>
+            <td>${producto.stock}</td>
+            <td>
+              <button class="btn btn-warning btn-sm" onclick="editarProducto(${index})">Editar</button>
+              <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${index})">Eliminar</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function editarProducto(index) {
+      const producto = productos[index];
+      document.getElementById('nombre').value = producto.nombre;
+      document.getElementById('precio').value = producto.precio;
+      document.getElementById('stock').value = producto.stock;
+
+      editando = true;
+      indexEditar = index;
+      btnGuardar.textContent = "Actualizar";
+    }
+
+    function eliminarProducto(index) {
+      if (confirm('¿Estás seguro de eliminar este producto?')) {
+        productos.splice(index, 1);
+        mostrarProductos();
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: burlywood;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="url"] {
+      width: 60%;
+      padding: 8px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin-left: 10px;
+      cursor: pointer;
+      background-color: rgb(179, 62, 16);
+      
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      background-color: rgb(231, 158, 209);
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border: 3px solid transparent;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery img.selected {
+      border: 3px solid #8d0970;
+      box-shadow: 0 0 10px #2196f3;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <h1><img src="iconos/collection-fill.svg" alt="" srcset="" height="30">Galería Dinámica</h1>
+
+<div class="controls">
+  <input type="url" id="image-url" placeholder="Ingresa URL de la imagen">
+  <button id="add-button">Agregar Imagen</button><h2></h2>
+  <input type="file" id="file-input" accept="image/*">
+  <button id="delete-button">Eliminar Imagen Seleccionada</button>
+</div>
+
+  
+
+  <div class="gallery" id="gallery"></div>
+
+  <script>
+    const inputUrl = document.getElementById('image-url');
+    const addButton = document.getElementById('add-button');
+    const deleteButton = document.getElementById('delete-button');
+    const gallery = document.getElementById('gallery');
+
+    let selectedImage = null;
+
+    // Agregar imagen
+    addButton.addEventListener('click', () => {
+      const url = inputUrl.value.trim();
+      if (!url) return;
+
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = "Imagen de usuario";
+
+      // Evento para seleccionar imagen
+      img.addEventListener('click', () => {
+        if (selectedImage) {
+          selectedImage.classList.remove('selected');
+        }
+        img.classList.add('selected');
+        selectedImage = img;
+      });
+
+      gallery.appendChild(img);
+      inputUrl.value = "";
+    });
+
+    // Eliminar imagen seleccionada
+    deleteButton.addEventListener('click', () => {
+      if (selectedImage) {
+        selectedImage.remove();
+        selectedImage = null;
+      }
+    });
+
+    // Tecla Enter para agregar imagen
+    inputUrl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        addButton.click();
+      }
+    });
+
+    // Tecla Delete para eliminar imagen
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Delete' && selectedImage) {
+        selectedImage.remove();
+        selectedImage = null;
+      }
+    });
+    const fileInput = document.getElementById('file-input');
+
+// Cargar imagen desde archivo local
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const img = document.createElement('img');
+    img.src = e.target.result;
+    img.alt = file.name;
+
+    img.addEventListener('click', () => {
+      if (selectedImage) selectedImage.classList.remove('selected');
+      img.classList.add('selected');
+      selectedImage = img;
+    });
+
+    gallery.appendChild(img);
+    guardarGaleria(); // opcional: guarda si estás usando localStorage
+  };
+
+  reader.readAsDataURL(file); // convierte la imagen local a base64
+});
+
+  </script>
+<!-- Sección de formulario debajo del carrusel -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header text-white bg-primary">
+          <h4 class="mb-0">Registro de Usuario</h4>
+        </div>
+        <form id="registroForm" class="needs-validation" novalidate>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre" required pattern="^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,}$">
+              <div class="invalid-feedback">Debe tener al menos 3 letras y solo caracteres alfabéticos.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input type="email" class="form-control" id="email" required>
+              <div class="invalid-feedback">Correo inválido.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="password" required>
+              <div class="invalid-feedback">Mínimo 8 caracteres, 1 número y 1 símbolo.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="confirmar" class="form-label">Confirmar Contraseña</label>
+              <input type="password" class="form-control" id="confirmar" required>
+              <div class="invalid-feedback">Las contraseñas deben coincidir.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="edad" class="form-label">Edad</label>
+              <input type="number" class="form-control" id="edad" required min="18">
+              <div class="invalid-feedback">Debes tener al menos 18 años (solo números).</div>
+            </div>
+          </div>
+          <div class="card-footer d-flex justify-content-between">
+            <button type="reset" class="btn btn-secondary">Reiniciar</button>
+            <button type="submit" class="btn btn-success" id="btnEnviar" disabled>Enviar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('registroForm');
+    const btnEnviar = document.getElementById('btnEnviar');
+
+    const nombre = document.getElementById('nombre');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const confirmar = document.getElementById('confirmar');
+    const edad = document.getElementById('edad');
+
+    function validarNombre() {
+      const regex = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,}$/;
+      return regex.test(nombre.value);
+    }
+
+    function validarEmail() {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email.value);
+    }
+
+    function validarPassword() {
+      const regex = /^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
+      return regex.test(password.value);
+    }
+
+    function validarConfirmar() {
+      return confirmar.value === password.value;
+    }
+
+    function validarEdad() {
+      const edadVal = parseInt(edad.value, 10);
+      return !isNaN(edadVal) && edadVal >= 18;
+    }
+
+    function checkForm() {
+      const valido = validarNombre() && validarEmail() && validarPassword() && validarConfirmar() && validarEdad();
+      btnEnviar.disabled = !valido;
+
+      nombre.classList.toggle('is-invalid', !validarNombre());
+      nombre.classList.toggle('is-valid', validarNombre());
+
+      email.classList.toggle('is-invalid', !validarEmail());
+      email.classList.toggle('is-valid', validarEmail());
+
+      password.classList.toggle('is-invalid', !validarPassword());
+      password.classList.toggle('is-valid', validarPassword());
+
+      confirmar.classList.toggle('is-invalid', !validarConfirmar());
+      confirmar.classList.toggle('is-valid', validarConfirmar());
+
+      edad.classList.toggle('is-invalid', !validarEdad());
+      edad.classList.toggle('is-valid', validarEdad());
+    }
+
+    form.addEventListener('input', checkForm);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!btnEnviar.disabled) {
+        alert('¡Formulario enviado correctamente!');
+        form.reset();
+        document.querySelectorAll('.is-valid, .is-invalid').forEach(el => el.classList.remove('is-valid', 'is-invalid'));
+        btnEnviar.disabled = true;
+      }
+    });
+  });
+</script>
+l
+
+<!--FIN DEL MODAL iniciar-->
+<!--               seccion carusel -->
+    <main class="container my-5">
+      
+        <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner rounded shadow-lg">
+                <div class="carousel-item active">
+                    <img src="assets/img/img1.jpg" class="d-block w-100" alt="Primera imagen del carrusel">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
+                        <h5>Primer Título del Carrusel</h5>
+                        <p>Descripción opcional para la primera imagen. Puedes detallar algo aquí.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/img/img2.jpg" class="d-block w-100" alt="Segunda imagen del carrusel">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
+                        <h5>Segundo Título del Carrusel</h5>
+                        <p>Breve texto para la segunda imagen, ofreciendo más contexto.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/img/img3.jpg" class="d-block w-100" alt="Tercera imagen del carrusel">
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
+                        <h5>Tercer Título del Carrusel</h5>
+                        <p>Última descripción para la imagen final del carrusel.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+        ---
+
+        <section id="seccion1" class="mb-5">
+            <h2 class="text-center mb-4">Introducción</h2>
+            <p class="lead">HTML, que significa HyperText Markup Language, es el lenguaje fundamental para crear y estructurar el contenido de las páginas web. Define la estructura y el significado del contenido, utilizando etiquetas para indicar cómo debe mostrarse, como párrafos, encabezados, listas, imágenes y enlaces. Es la base de cualquier sitio web y permite a los desarrolladores web construir la estructura y contenido de sus páginas. <strong>demuestra</strong> el uso de <em>HTML5 y CSS</em> para estructurar contenido web.</p>
+
+            ---
+<!--               seccion card -->
+            <h3 class="text-center mb-4 mt-5">Multimedia</h3>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card h-100 shadow-sm custom-card">
+                        <details class="h-100">
+                            <summary class="card-header bg-secondary text-white">Sección 1</summary>
+                            <div class="card-body text-center">
+                                <img src="assets/img/img1.jpg" class="img-fluid rounded" alt="Imagen descriptiva 1">
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 shadow-sm custom-card">
+                        <details class="h-100">
+                            <summary class="card-header bg-secondary text-white">Sección 2</summary>
+                            <div class="card-body text-center">
+                                <img src="assets/img/img2.jpg" class="img-fluid rounded" alt="Imagen descriptiva 2">
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 shadow-sm custom-card">
+                        <details class="h-100">
+                            <summary class="card-header bg-secondary text-white">Sección 3</summary>
+                            <div class="card-body text-center">
+                                <img src="assets/img/img3.jpg" class="img-fluid rounded" alt="Imagen descriptiva 3">
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        ---
+
+        <section id="seccion2" class="mb-5" >
+            <div class="row g-5" class="text-center">
+                <article class="col-md-10" class="text-center">
+                    <h2 class="text-center mb-8">Listas de Intereses</h2>
+                    <div class="card shadow-sm custom-card h-100" class="text-center">
+                        <div class="card-body" class="text-center">
+                            
+
+                            <h3 class="card-title">Lista desordenada</h3>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex align-items-center mb-7">
+                                    HTML
+                                    <img src="assets/img/img1.jpg" class="img-fluid rounded ms-7" alt="HTML" style="max-height: 140px;">
+                                </li>
+                                <li class="list-group-item d-flex align-items-center mb-2">
+                                    CSS
+                                    <img src="assets/img/img2.jpg" class="img-fluid rounded ms-3" alt="CSS" style="max-height: 180px;">
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    JavaScript
+                                    <img src="assets/img/img3.jpg" class="img-fluid rounded ms-3" alt="JavaScript" style="max-height: 180px;">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+<h3></h3>
+<h3 class="text-center"><img src="iconos/cpu-fill.svg" style="width: 4%;" > INFORMACION</h3>
+<div class="accordion accordion-flush" id="accordionFlushExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+        Accordion Item #2
+      </button>
+    </h2>
+    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+        Accordion Item #3
+      </button>
+    </h2>
+    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+    </div>
+  </div>
+</div>
+
+<h3></h3>
+<h2></h2>
+<footer class="bg-dark text-white pt-4">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      <!-- Columna 1 -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase">Mi Sitio</h5>
+        <p>Tu página web de confianza para aprender, explorar y disfrutar contenido dinámico.</p>
+      </div>
+
+      <!-- Columna 2 -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase">Enlaces</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white text-decoration-none">Inicio</a></li>
+          <li><a href="#" class="text-white text-decoration-none">Galería</a></li>
+          <li><a href="#" class="text-white text-decoration-none">Contacto</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna 3 -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase">Contacto</h5>
+        <p><i class="bi bi-envelope-fill me-2"></i> contacto@misitio.com</p>
+        <p><i class="bi bi-phone-fill me-2"></i> +593 123 456 789</p>
+      </div>
+
+      <!-- Columna 4 -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase">Síguenos</h5>
+        <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-twitter"></i></a>
+      </div>
+    </div>
+
+    <hr class="border-light">
+
+    <div class="text-center pb-3">
+      <small>&copy; 2025 Mi Sitio. Todos los derechos reservados.</small>
+    </div>
+  </div>
+</footer>
+
+    <!--LIBRERIA JS-->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.bundle.min (2).js"></script>
+    <script src="js/bootstrap.bundle.min (3).js"></script>
+    <script src="js/main.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/brands.js" integrity="sha384-sCI3dTBIJuqT6AwL++zH7qL8ZdKaHpxU43dDt9SyOzimtQ9eyRhkG3B7KMl6AO19" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
+</body>
+</html>
